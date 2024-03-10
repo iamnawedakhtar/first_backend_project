@@ -1,0 +1,55 @@
+// require('dotenv').config({path:"./env"});
+
+import dotenv from "dotenv";
+import DBconnect from "./db/index.js";
+
+dotenv.config({
+    path:"./env"
+})
+DBconnect();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//below is one way of connecting to db ,here we have somewhat polluted our index file so now we will see another approach in whi
+
+/*
+import express  from "express";
+const app=express();
+(async()=>{
+    try {
+       await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
+       app.on("error",(error)=>{
+            console.log("error:",error);
+            throw error;     
+       })
+
+       app.length(process.env.PORT,()=>{
+        console.log(`app is running on port ${process.env.PORT}`);
+        
+       })
+    } catch (error) {
+        console.error("ERROR: ",error);
+        throw error;
+    }
+})()  //this is an iffie ->immediatly invoked funtion
+
+*/
