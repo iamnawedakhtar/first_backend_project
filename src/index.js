@@ -6,7 +6,18 @@ import DBconnect from "./db/index.js";
 dotenv.config({
     path:"./env"
 })
-DBconnect();
+
+DBconnect()   // as dbconnect ek async fun hai to it will return a promise 
+.then(()=>{
+    app.listen(process.env.PORT|| 8000,()=>{
+        console.log(`server is runnig on port ${process.env.PORT}`);
+    });
+})
+.catch((err)=>
+{
+    console.log("db connection failed",err); 
+}
+)
 
 
 
