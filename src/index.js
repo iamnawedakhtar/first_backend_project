@@ -1,11 +1,13 @@
-// require('dotenv').config({path:"./env"});
+// require('dotenv').config({path:"./env"}); 
 
 import dotenv from "dotenv";
 import DBconnect from "./db/index.js";
+import { app } from "./app.js";
 
 dotenv.config({
     path:"./env"
 })
+
 
 DBconnect()   // as dbconnect ek async fun hai to it will return a promise 
 .then(()=>{
