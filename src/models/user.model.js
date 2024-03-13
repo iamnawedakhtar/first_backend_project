@@ -74,7 +74,7 @@ userSchema.methods.generateAccessTokens=function(){
 userSchema.methods.generateRefreshTokens=function(){
     return Jwt.sign(
         {
-             _id:this._id // bar bar refresh hota rahta to uske liye jada info.payload dene ki jrurat nhi
+             _id:this._id // bar bar refresh hota rahta to uske liye jada info.payload dene ki jrurat nhi as compared to upr wala
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
