@@ -25,7 +25,7 @@ const userSchema= new Schema({
         typeof:String,
         required: [true, "password is required"]
     },
-    Avatra:{
+    Avatar:{
         typeof:String,  //cloudnary url
         required:true
     },
@@ -35,7 +35,6 @@ const userSchema= new Schema({
     WatchHistory:{
         typeof:mongoose.Schema.Types.ObjectId,
         ref:"Video",
-        required:true,
     },
     refreshToken :{
         typeof:String
@@ -48,7 +47,7 @@ userSchema.pre("save", async function(next){
     
     if(!this.isModified("password")) return next();  // if only password is modified
 
-    this.password= bcrypt.hash(this.password, 10);
+    this.password= await bcrypt.hash(this.password, 10);
     next();
 })
 
