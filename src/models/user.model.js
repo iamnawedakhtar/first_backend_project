@@ -1,43 +1,44 @@
 import mongoose ,{Schema} from "mongoose";
-import { Jwt } from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import pkg from 'jsonwebtoken';
+const { Jwt } = pkg;
+import bcrypt from "bcryptjs"
 
 const userSchema= new Schema({
    
     username:{
-        typeof:String,
+        type:String,
         required: true,
         lowercase:true,
         trim:true,
         index:true   // this is optimise search in db
     },
     Fullname:{
-        typeof:String,
+        type:String,
         required: true,
         trim:true,
         index:true
     },
     email:{
-        typeof:String,
+        type:String,
         required: true,
     },
     password:{
-        typeof:String,
+        type:String,
         required: [true, "password is required"]
     },
     Avatar:{
-        typeof:String,  //cloudnary url
+        type:String,  //cloudnary url
         required:true
     },
     CoverImage:{
-        typeof:String,
+        type:String,
     },
     WatchHistory:{
-        typeof:mongoose.Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Video",
     },
     refreshToken :{
-        typeof:String
+        type:String
     }
 
 },{timeseries:true})
