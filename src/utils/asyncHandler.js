@@ -1,3 +1,4 @@
+// the asyncHandler utility simplifies error handling for asynchronous route handlers in Express.js applications by wrapping them in a middleware function that ensures any errors are caught and forwarded to the error-handling middleware. This promotes cleaner and more maintainable code by centralizing error handling logic.
 // promise wala async handler
 
 const asyncHandler =(requestHandler) =>{
