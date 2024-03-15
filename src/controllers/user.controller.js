@@ -1,9 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiErrors } from "../utils/ApiErrros.js";
 import { User } from "../models/user.model.js";
-import { cloudinaryUpload } from "../utils/cloudinary.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js"; 
-
 
 
 const registerUser=asyncHandler(async(req,res)=>{
@@ -18,8 +17,8 @@ const registerUser=asyncHandler(async(req,res)=>{
     // return res
 
     // get user details from frontend ->req.body se using postman
-    const {fullname,username,email,password}= req.body;
-    console.log("email: ",email);
+    const {Fullname,username,email,password}= req.body;
+    // console.log("email: ",email);
 
     // validation - not empty
 
@@ -27,7 +26,7 @@ const registerUser=asyncHandler(async(req,res)=>{
     // throw new ApiErrors(400,"password is requried")   -> this is basic way to do validation 
 
     if(
-        [fullname,username,password,email].some((fields)=> fields?.trim()==="")
+        [Fullname,username,password,email].some((fields)=> fields?.trim()==="")
     )
     {
         throw new ApiErrors(400,"All fields are requried");
@@ -41,11 +40,17 @@ const registerUser=asyncHandler(async(req,res)=>{
     if (exitedUser) {
         throw new ApiErrors(409,"User with username or email already exists")
     }
-
+    
+    // console.log(req.files);
+    
     // check for images, check for avatar
     const avtarLocalpath = req.files?.avatar[0]?.path;  //this gives local path as it is still on server
-    const coverImageLocalpath = req.files?.coverImage[0]?.path;  
-    
+    // const coverImageLocalpath = req.files?.coverImage[0]?.path; 
+
+    let coverImageLocalpath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0) {
+        coverImageLocalpath=req.files.coverImage[0].path;  
+    }  
     if(!avtarLocalpath)
     {
         throw new ApiErrors(400,"Avatar file is required")
@@ -53,29 +58,25 @@ const registerUser=asyncHandler(async(req,res)=>{
 
     // upload them to cloudinary, avatar
 
-     const avatar= await cloudinaryUpload(avtarLocalpath)
-     const coverImage= await cloudinaryUpload(coverImageLocalpath)
+     const avatar= await uploadOnCloudinary(avtarLocalpath)
+     const coverImage= await uploadOnCloudinary(coverImageLocalpath) //-> if coverImageLocalpath nahi hoga to cloudinay error nhi throw karega sirf ek empty string rerturn kareg (good work clodinary)
      if(!avatar)
      {
         throw new ApiErrors(400,"Avatar is required")
      }
-
-
     // create user object - create entry in db
 
     const user=await User.create(
         {
             username:username.toLowerCase(),
-            fullname,
+            Fullname,
             email,
             password,
             avatar:avatar.url,
-            coverImage:coverImage?.url || "",
+            coverImage:coverImage?.url || ""
         }
     )
-
     //check for user creation
-
     const createdUser= await User.findById(user._id).select(
         "-password -refreshToken"
     )

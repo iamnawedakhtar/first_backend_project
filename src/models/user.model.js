@@ -26,11 +26,11 @@ const userSchema= new Schema({
         type:String,
         required: [true, "password is required"]
     },
-    Avatar:{
+    avatar:{
         type:String,  //cloudnary url
         required:true
     },
-    CoverImage:{
+    coverImage:{
         type:String,
     },
     WatchHistory:{
