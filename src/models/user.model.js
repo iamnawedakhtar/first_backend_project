@@ -1,6 +1,5 @@
 import mongoose ,{Schema} from "mongoose";
-import pkg from 'jsonwebtoken';
-const { Jwt } = pkg;
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs"
 
 const userSchema= new Schema({
@@ -37,7 +36,7 @@ const userSchema= new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Video",
     },
-    RefreshToken :{
+    RefreshToken:{
         type:String
     }
 
@@ -58,7 +57,7 @@ userSchema.methods.isPasswordCorrect= async function(password)  //definng custom
 }
 
 userSchema.methods.generateAccessTokens=function(){
-    return Jwt.sign(
+    return jwt.sign(
         {
              _id:this._id,
              email:this.email,
@@ -67,18 +66,18 @@ userSchema.methods.generateAccessTokens=function(){
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-             expiresIN:process.env.ACCESS_TOKEN_EXPIRY
+            expiresIn:process.env.ACCESS_TOKEN_EXPIRY
         }
     )
 };
 userSchema.methods.generateRefreshTokens=function(){
-    return Jwt.sign(
+    return jwt.sign(
         {
              _id:this._id // bar bar refresh hota rahta to uske liye jada info.payload dene ki jrurat nhi as compared to upr wala
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-             expiresIN:process.env.REFRESH_TOKEN_EXPIRY
+            expiresIn:process.env.REFRESH_TOKEN_EXPIRY
         }
     )
 };
