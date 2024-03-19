@@ -350,8 +350,6 @@ const UpdateAvatar= asyncHandler( async(req,res)=>{
     ))
 })
 
-
-
 export { 
     registerUser,
     userLogin ,
